@@ -1,0 +1,6 @@
+@UJ_AccountManagement_HostAddress = http://localhost:5100
+
+GET {{UJ_AccountManagement_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
