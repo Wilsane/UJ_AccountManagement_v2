@@ -1,0 +1,77 @@
+<!-- Transaction Filters -->
+<div class="m-4 ms-2 mt-2 d-flex flex-column">
+  <div class="card p-2 shadow-sm align-self-end">
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <!-- Filter Selection -->
+      <select [(ngModel)]="selectedFilter" class="form-select w-auto" (change)="onFilterChange()">
+        <option value="all">All Transactions</option>
+        <option value="id">By ID</option>
+        <option value="search">By Keyword</option>
+        <option value="date">By Date</option>
+        <option value="account">By Account Holder</option>
+        <option value="advanced">Advanced Filters</option>
+      </select>
+
+      <!-- Filter Input Fields -->
+      <input *ngIf="selectedFilter === 'id'" type="number" class="form-control w-auto" placeholder="Transaction ID">
+      <input *ngIf="selectedFilter === 'search'" type="text" class="form-control w-auto" placeholder="Search Transactions">
+      <input *ngIf="selectedFilter === 'account'" type="text" class="form-control w-auto" placeholder="Account Holder">
+
+      <!-- By Date Filters -->
+      <ng-container *ngIf="selectedFilter === 'date'">
+        <input placeholder="Start Date"
+               class="form-control w-auto"
+               type="text"
+               onfocus="(this.type='date')"
+               onblur="(this.type='text')"
+               id="date" />
+        <input placeholder="End Date"
+               class="form-control w-auto"
+               type="text"
+               onfocus="(this.type='date')"
+               onblur="(this.type='text')"
+               id="date" />
+      </ng-container>
+
+      <!-- Advanced Filters -->
+      <ng-container *ngIf="selectedFilter === 'advanced'">
+        <input type="text" class="form-control w-auto" placeholder="Account Holder">
+        <input type="number" class="form-control w-auto" placeholder="Account ID">
+        <input type="text" class="form-control w-auto" placeholder="Transaction Type">
+        <input placeholder="Start Date"
+               class="form-control w-auto"
+               type="text"
+               onfocus="(this.type='date')"
+               onblur="(this.type='text')"
+               id="date" />
+        <input placeholder="End Date"
+               class="form-control w-auto"
+               type="text"
+               onfocus="(this.type='date')"
+               onblur="(this.type='text')"
+               id="date" />
+      </ng-container>
+
+      <button class="btn btn-primary">Search</button>
+    </div>
+  </div>
+
+  <button class="btn btn-success align-self-end mt-2 me-0"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasRight"
+          aria-controls="offcanvasRight">
+    Add Transaction
+  </button>
+
+</div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>
+

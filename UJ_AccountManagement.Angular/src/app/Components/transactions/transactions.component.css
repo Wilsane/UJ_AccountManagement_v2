@@ -1,0 +1,16 @@
+.card {
+  width: 100%;
+  max-width: fit-content; /* Allow the card to expand fully */
+  margin-left: auto; 
+}
+
+
+
+.form-control {
+  margin-right: 10px; /* Space between form controls */
+  width: auto;
+}
+
+select.form-select, .btn {
+  margin-right: 10px; /* Space between form controls and button */
+}
