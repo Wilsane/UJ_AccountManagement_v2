@@ -4,6 +4,23 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    ...
+    <form>
+      <!-- Label for Account Holder -->
+      <div class="mb-3">
+        <label for="accountHolder" class="form-label">Account Holder:</label>
+
+        <!-- Input with datalist -->
+        <input list="accountHolders" id="accountHolder" name="accountHolder" class="form-control" placeholder="Select or type an account holder">
+
+        <!-- Datalist with options -->
+        <datalist id="accountHolders">
+          <option value="John Doe">
+          <option value="Jane Smith">
+          <option value="Alice Johnson">
+          <option value="Bob Brown">
+          <option value="Charlie White">
+        </datalist>
+      </div>
+    </form>
   </div>
 </div>

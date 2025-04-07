@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UJ_AccountManagement.Domain.DTOs;
 using UJ_AccountManagement.Domain.Entities;
 using UJ_AccountManagement.Domain.Interfaces;
 
@@ -16,14 +17,14 @@ namespace UJ_AccountManagement.API.Controllers
             _transactionRepository = transactionRepository;
         }
 
-        [HttpGet(Name = "Get All Transactions")]
-        public async Task<ActionResult<List<Transaction>>> GetAllTransactions()
+        [HttpGet]
+        public async Task<ActionResult<List<TransactionDTO>>> GetAllTransactions()
         {
             var transactions = await _transactionRepository.GetAllTransactions();
 
             if (transactions == null || transactions.Count == 0) return NotFound();
 
-            return Ok(transactions);
+            return Ok(transactions?? new List<Domain.DTOs.TransactionDTO>());
         }
 
         [HttpGet("{transactionId}")]

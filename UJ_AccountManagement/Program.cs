@@ -9,6 +9,8 @@ namespace UJ_AccountManagement
     {
         public static void Main(string[] args)
         {
+            var MyAllowedOrigins = "_myAllowSpecificOrigins";
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -20,6 +22,14 @@ namespace UJ_AccountManagement
 
             builder.Services.AddScoped<DbConnectionFactory>();
             builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                                  builder =>
+                                  builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader());
+            });
 
             var app = builder.Build();
 
@@ -30,8 +40,9 @@ namespace UJ_AccountManagement
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
 
+            app.UseHttpsRedirection();
+            app.UseCors("AllowAllOrigins");
             app.UseAuthorization();
 
 

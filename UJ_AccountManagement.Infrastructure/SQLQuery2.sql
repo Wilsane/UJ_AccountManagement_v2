@@ -61,3 +61,8 @@ VALUES (100005, 'Deposit', 450.25);
 
 SELECT*FROM Customers;
 SELECT*FROM Transactions;
+SELECT t.transactionId, c.AccountHolder as 'Account Holder',
+        t.TransactionType, t.ReferenceId, t.Amount, t.TransactionDate
+FROM Transactions t
+INNER JOIN
+Customers c ON t.AccountId=c.AccountId;

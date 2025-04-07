@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UJ_AccountManagement.Domain.DTOs;
 using UJ_AccountManagement.Domain.Entities;
 using UJ_AccountManagement.Domain.Interfaces;
 using UJ_AccountManagement.Infrastructure.DBContext;
@@ -38,34 +39,54 @@ namespace UJ_AccountManagement.Infrastructure.Repositories
             using var connection = await _dbConnectionFactory.CreateConnectionAsync();
             const string query = "DELETE FROM Transactions WHERE TransactionId = @TransactionId";
             await connection.ExecuteAsync(query, new { TransactionId = transactionId });
-
             connection.Close();
         }
 
-        public async Task<List<Transaction>> GetAllTransactions()
+        public async Task<List<TransactionDTO>> GetAllTransactions()
         {
             using var connection = await _dbConnectionFactory.CreateConnectionAsync();
-            var transactions = await connection.QueryAsync<Transaction>("SELECT * FROM Transactions");
-
-            return transactions.ToList();
-        }
-
-        public async Task<List<Transaction>> GetTransactions(string searchTerm)
-        {
-            using var connection = await _dbConnectionFactory.CreateConnectionAsync();
-
             const string query = @"
-                SELECT * FROM Transactions 
-                WHERE TransactionType LIKE @SearchTerm 
-                OR CAST(TransactionId AS NVARCHAR) LIKE @SearchTerm
-                OR CAST(AccountId AS NVARCHAR) LIKE @SearchTerm
-                OR CAST(ReferenceId AS NVARCHAR) LIKE @SearchTerm
-                OR CAST(Amount AS NVARCHAR) LIKE @SearchTerm";
+                        SELECT 
+                            t.TransactionId, 
+                            t.AccountId, 
+                            c.AccountHolder, 
+                            t.TransactionType, 
+                            t.ReferenceId, 
+                            t.Amount, 
+                            t.TransactionDate 
+                        FROM Transactions t 
+                        INNER JOIN Customers c ON t.AccountId = c.AccountId;";
 
-            var transactions = await connection.QueryAsync<Transaction>(query, new { SearchTerm = $"%{searchTerm}%" });
+            var transactions = await connection.QueryAsync<TransactionDTO>(query);
+            return transactions.ToList();
+        }
+
+
+        public async Task<List<TransactionDTO>> GetTransactions(string searchTerm)
+        {
+            using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+
+            const string query = @"SELECT 
+                                        t.TransactionId, 
+                                        t.AccountId, 
+                                        c.AccountHolder, 
+                                        t.TransactionType, 
+                                        t.ReferenceId, 
+                                        t.Amount, 
+                                        t.TransactionDate
+                                    FROM Transactions t
+                                    INNER JOIN Customers c ON t.AccountId = c.AccountId
+                                    WHERE t.TransactionType LIKE @SearchTerm
+                                        OR CAST(t.TransactionId AS NVARCHAR) LIKE @SearchTerm
+                                        OR CAST(t.AccountId AS NVARCHAR) LIKE @SearchTerm
+                                        OR CAST(t.ReferenceId AS NVARCHAR) LIKE @SearchTerm
+                                        OR CAST(t.Amount AS NVARCHAR) LIKE @SearchTerm";
+
+            var transactions = await connection.QueryAsync<TransactionDTO>(query, new { SearchTerm = $"%{searchTerm}%" });
 
             return transactions.ToList();
         }
+
 
 
         public async Task<Transaction> GetTransactionById(int transactionId)

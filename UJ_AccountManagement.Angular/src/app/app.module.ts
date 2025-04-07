@@ -5,19 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TransactionsComponent } from './Components/transactions/transactions.component';
 import { FormsModule } from '@angular/forms';
-import { AddTransactionsComponent } from './Componets/add-transactions/add-transactions.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AgGridModule } from 'ag-grid-angular';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     TransactionsComponent,
-    AddTransactionsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    AgGridModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
