@@ -22,5 +22,7 @@ namespace UJ_AccountManagement.Domain.Interfaces
         Task AddTransaction(Transaction transaction);
         Task UpdateTransaction(Transaction transaction);
         Task DeleteTransaction(int transactionId);
+
+        Task<List<Customers>> GetAllCustomers();
     }
 }

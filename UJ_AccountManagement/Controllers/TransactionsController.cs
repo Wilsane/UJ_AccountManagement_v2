@@ -24,7 +24,7 @@ namespace UJ_AccountManagement.API.Controllers
 
             if (transactions == null || transactions.Count == 0) return NotFound();
 
-            return Ok(transactions?? new List<Domain.DTOs.TransactionDTO>());
+            return Ok(transactions ?? new List<Domain.DTOs.TransactionDTO>());
         }
 
         [HttpGet("{transactionId}")]
@@ -76,13 +76,16 @@ namespace UJ_AccountManagement.API.Controllers
             if (!endDate.HasValue) endDate = DateTime.UtcNow.Date; // Sets to the current date
 
             // If the startDate is not provided, return a BadRequest
-            if (!startDate.HasValue)return BadRequest(new { message = "Start date is required! 😢", status = "error" });
+            if (!startDate.HasValue) return BadRequest(new { message = "Start date is required! 😢", status = "error" });
 
             var transactions = await _transactionRepository.GetTransactionsByDate(startDate, endDate);
 
             // If no transactions were found, return a NotFound response
-            if (transactions == null || !transactions.Any()) return NotFound(new { message = "No transactions found for the given date range. 😢",
-                status = "error" });
+            if (transactions == null || !transactions.Any()) return NotFound(new
+            {
+                message = "No transactions found for the given date range. 😢",
+                status = "error"
+            });
 
             return Ok(transactions);
         }
@@ -106,12 +109,12 @@ namespace UJ_AccountManagement.API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateTransaction(Transaction transaction)
         {
-            if(!ModelState.IsValid) return BadRequest(new { message="Invalid input! 😢", status = "error" });
+            if (!ModelState.IsValid) return BadRequest(new { message = "Invalid input! 😢", status = "error" });
             var existingTransaction = await _transactionRepository.GetTransactionById(transaction.TransactionId);
             if (existingTransaction == null) return NotFound(new { message = "Transaction does not exist! 😢", status = "error" });
 
             await _transactionRepository.UpdateTransaction(transaction);
-            return Ok(new { message= "Transaction updated successfully! 😊", status="success", transaction=transaction });
+            return Ok(new { message = "Transaction updated successfully! 😊", status = "success", transaction = transaction });
         }
 
         [HttpDelete]
@@ -119,15 +122,15 @@ namespace UJ_AccountManagement.API.Controllers
         public async Task<ActionResult> DeleteTransaction(int transactionId)
         {
             var existingTransaction = await _transactionRepository.GetTransactionById(transactionId);
-            if (existingTransaction == null) return NotFound(new { message = "Transaction does not exist! 😢", status="error" });
+            if (existingTransaction == null) return NotFound(new { message = "Transaction does not exist! 😢", status = "error" });
 
             await _transactionRepository.DeleteTransaction(transactionId);
 
-            return Ok(new { message = "Transaction deleted successfully! 😊", status="success" });
+            return Ok(new { message = "Transaction deleted successfully! 😊", status = "success" });
         }
 
         [HttpGet("CustomFilter")]
-        public async Task<ActionResult<List<Transaction>>> GetFilteredTransactions(string? accountHolder, int? accountId, 
+        public async Task<ActionResult<List<Transaction>>> GetFilteredTransactions(string? accountHolder, int? accountId,
                                                                                    string? transactionType, DateTime? startDate, DateTime? endDate)
         {
             var transactions = await _transactionRepository.GetFilteredTransactions(accountHolder, accountId, transactionType, startDate, endDate);
@@ -136,6 +139,14 @@ namespace UJ_AccountManagement.API.Controllers
                 return NotFound(new { message = "No transactions found with the given filters! 😢", status = "error" });
 
             return Ok(transactions);
+        }
+
+        [HttpGet("Customers")]  
+        public async Task<ActionResult<List<Customers>>> GetAllCustomers()
+        {
+            var customers = await _transactionRepository.GetAllCustomers();
+            if (customers == null || customers.Count == 0) return NotFound();
+            return Ok(customers);
         }
 
 

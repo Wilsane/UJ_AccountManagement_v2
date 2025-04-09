@@ -7,6 +7,7 @@ import {
   themeAlpine,
   themeBalham} from "ag-grid-community";
 import { AllCommunityModule } from "ag-grid-community";
+import { ActionButtonsComponent } from '../action-buttons/action-buttons.component';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -17,6 +18,12 @@ interface IRow {
   amount: number;
   transactionDate: Date;
 }
+
+interface Customer {
+  accountId: number;
+  accountHolder: string;
+}
+
 
 
 
@@ -29,6 +36,7 @@ interface IRow {
 export class TransactionsComponent implements OnInit {
   // Filter options
   selectedFilter: string = 'all'; // Default selected filter
+    customers: Customer[]=[];
   onFilterChange() {
     console.log("Selected Filter:", this.selectedFilter);
   }
@@ -45,14 +53,33 @@ export class TransactionsComponent implements OnInit {
     { field: "transactionId" },
     { field: "accountHolder" },
     { field: "transactionType" },
-    { field: "amount"},
+    { field: "amount" },
     { field: "transactionDate" },
-  ];
+    {
+      colId: "actions",
+      headerName: "Actions",
+      cellStyle: { 'margin': '0 auto', 'padding-bottom': '2px' },
+      cellRenderer: ActionButtonsComponent,
+      filter: false,
+      sortable: false,
+      cellRendererParams: {
+        onClick: (params: any) => this.onEditClick(params),
+        onDelete: (params: any) => this.onDeleteClick(params)
+      }
+    } 
+  ]; 
+
   defaultColDef: ColDef = {
     flex: 1,
     filter: true,
   };
 
+  onEditClick(params: any): void {
+    alert(`Mission Launched for ID: ${params.data.transactionId}`);
+  }
+  onDeleteClick(params: any): void {
+    alert(`Deleting transaction with ID: ${params.data.transactionId}`);
+  }
 
   getTransactions() {
     this.httpClient.get('https://localhost:44373/api/Transactions').subscribe((res: any) => {
@@ -61,25 +88,30 @@ export class TransactionsComponent implements OnInit {
     })
   }
 
+
   ngOnInit(): void {
 
     
     let apiUrl = 'https://localhost:44373/api/Transactions';
 
     this.getTransactions();
-
+    this.getAllCustomers();
   }
 
 
   // Add Transaction
-  AddTransactionData = {
-    accountId: null,
-    transactionType: '',
-    amount: null,
-  }
-   onAddTransactionSubmit(): void {
-    
+  AddTransactionData: {
+    accountId: number | null;
+    transactionType: string;
+    amount: number | null;
+  } = {
+      accountId: null,
+      transactionType: '',
+      amount: null
+    };
 
+   onAddTransactionSubmit(): void {
+   
      let httpOptions = {
        headers: new HttpHeaders({
          Authorization: 'my-auth-token',
@@ -109,6 +141,33 @@ export class TransactionsComponent implements OnInit {
      });
   }
 
+
+  getAllCustomers() {
+    this.httpClient.get<Customer[]>('https://localhost:44373/api/Transactions/Customers')
+      .subscribe({
+        next: (res) => {
+          this.customers = res;
+          console.log("Fetched Customers:", this.customers);
+        },
+        error: (err) => console.error("Error fetching customers:", err)
+      });
+  }
+
+  onAccountHolderInput(event: Event): void {
+    const input = (event.target as HTMLInputElement).value;
+    const selected = this.customers.find(c => c.accountHolder === input);
+    if (selected) {
+      this.AddTransactionData.accountId = selected.accountId;
+    }
+    this.onAccountHolderChange(event);
+  }
+  onAccountHolderChange(event: any): void {
+    const inputValue = event.target.value.trim();
+
+    if (!inputValue) {
+      this.AddTransactionData.accountId = null;
+    }
+  }
 
 
 }

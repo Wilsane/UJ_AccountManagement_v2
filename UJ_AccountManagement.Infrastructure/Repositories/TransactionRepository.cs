@@ -143,8 +143,8 @@ namespace UJ_AccountManagement.Infrastructure.Repositories
 
             var transactions = await connection.QueryAsync<Transaction>(query, new
             {
-                FromDate = startDate?.Date, 
-                ToDate = endDate?.Date, 
+                FromDate = startDate?.Date,
+                ToDate = endDate?.Date,
                 CurrentDate = DateTime.UtcNow.Date
             });
 
@@ -166,7 +166,7 @@ namespace UJ_AccountManagement.Infrastructure.Repositories
 
         }
 
-        public async Task<List<Transaction>> GetFilteredTransactions(string? accountHolder, int? accountId, 
+        public async Task<List<Transaction>> GetFilteredTransactions(string? accountHolder, int? accountId,
                                                                string? transactionType, DateTime? startDate, DateTime? endDate)
         {
             var connection = await _dbConnectionFactory.CreateConnectionAsync();
@@ -193,5 +193,19 @@ namespace UJ_AccountManagement.Infrastructure.Repositories
             var transactions = await connection.QueryAsync<Transaction>(query, parameters);
             return transactions.AsList();
         }
+
+
+
+        public async Task<List<Customers>> GetAllCustomers()
+        {
+            using var connection = await _dbConnectionFactory.CreateConnectionAsync();
+            string query = "SELECT * FROM Customers";
+
+            var customers = await connection.QueryAsync<Customers>(query);
+
+            return customers.ToList();
+
+        }
+
     }
 }

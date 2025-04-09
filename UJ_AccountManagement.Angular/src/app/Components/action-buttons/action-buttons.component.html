@@ -1,0 +1,15 @@
+<div class="action-buttons">
+  <button class="edit-btn"
+          (click)="invokeAction()"
+          [title]="'Edit record ' + params.data.transactionId + ' for ' + params.data.accountHolder">
+    <i class="fas fa-edit"></i>
+    Edit
+  </button>
+
+  <button class="delete-btn"
+          (click)="invokeDelete()"
+          [title]="'Delete record ' + params.data.transactionId + ' for ' + params.data.accountHolder">
+    <i class="fas fa-trash-alt"></i>
+    Delete
+  </button>
+</div>
