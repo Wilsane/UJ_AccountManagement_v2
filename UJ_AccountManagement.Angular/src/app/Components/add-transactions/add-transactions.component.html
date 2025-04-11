@@ -1,26 +1,62 @@
+<!-- Add Transaction -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+  <div class="offcanvas-header bg-success text-white">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">New Transaction</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <form>
-      <!-- Label for Account Holder -->
+    <form (ngSubmit)="onAddTransactionSubmit()" novalidate>
+
       <div class="mb-3">
         <label for="accountHolder" class="form-label">Account Holder:</label>
 
         <!-- Input with datalist -->
-        <input list="accountHolders" id="accountHolder" name="accountHolder" class="form-control" placeholder="Select or type an account holder">
+        <input list="accountHolders"
+               id="accountHolder"
+               name="accountHolder"
+               class="form-control w-100"
+               placeholder="Select or type an account holder"
+               [(ngModel)]="selectedAccountHolder"
+               (input)="onAccountHolderInput($event)">
 
-        <!-- Datalist with options -->
+        <!-- Dynamic datalist options -->
         <datalist id="accountHolders">
-          <option value="John Doe">
-          <option value="Jane Smith">
-          <option value="Alice Johnson">
-          <option value="Bob Brown">
-          <option value="Charlie White">
+          <option *ngFor="let customer of customers" [value]="customer.accountHolder"></option>
         </datalist>
       </div>
+
+
+      <div class="mb-3">
+        <label for="accountId" class="form-label">Account ID:</label>
+        <input type="number" id="accountId" name="accountId" disabled [(ngModel)]="AddTransactionData.accountId"
+               class="form-control w-100" placeholder="Enter Account ID" required>
+      </div>
+
+      <!-- Transaction Type -->
+      <div class="mb-3">
+        <label for="transactionType" class="form-label">Transaction Type:</label>
+        <select id="transactionType" name="transactionType" [(ngModel)]="AddTransactionData.transactionType"
+                class="form-select" required>
+          <option value="" selected disabled hidden>Select Transaction Type</option>
+          <option value="Deposit">Deposit</option>
+          <option value="Withdrawal">Withdrawal</option>
+          <option value="Transfer">Transfer</option>
+        </select>
+      </div>
+
+      <!-- Amount -->
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount:</label>
+        <input type="number" step="0.01" id="amount" name="amount" [(ngModel)]="AddTransactionData.amount"
+               class="form-control w-100" placeholder="Enter Amount" required>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success w-100">Submit</button>
     </form>
   </div>
+</div>
+
+<div id="toast-container" aria-live="polite" aria-atomic="true" class="bg-body-secondary position-relative bd-example-toasts rounded-3">
+  <div class="toast-container p-3" id="toastPlacement"></div>
 </div>

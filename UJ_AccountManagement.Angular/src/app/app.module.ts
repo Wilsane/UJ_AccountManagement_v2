@@ -11,6 +11,10 @@ import { AgGridModule } from 'ag-grid-angular';
 
 
 import { ActionButtonsComponent } from './Components/action-buttons/action-buttons.component';
+import { AddTransactionsComponent } from './Components/add-transactions/add-transactions.component';
+import { DeleteTransactionComponent } from './Components/delete-transaction/delete-transaction.component';
+import { AlertNotificationComponent } from './Components/notifications/alert-notification/alert-notification.component';
+
 
 
 
@@ -19,6 +23,9 @@ import { ActionButtonsComponent } from './Components/action-buttons/action-butto
     AppComponent,
     TransactionsComponent,
     ActionButtonsComponent,
+    AddTransactionsComponent,
+    DeleteTransactionComponent,
+    AlertNotificationComponent
   ],
   imports: [
     BrowserModule,

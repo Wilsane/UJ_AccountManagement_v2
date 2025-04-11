@@ -23,10 +23,22 @@ CREATE TABLE Transactions (
     TransactionDate DATETIME NOT NULL DEFAULT GETDATE(),
     FOREIGN KEY (AccountId) REFERENCES Customers(AccountId)
 );
+CREATE TABLE Account (
+    AccountId INT IDENTITY PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Phone1 VARCHAR(20) NOT NULL,
+    Phone2 VARCHAR(20) NOT NULL,
+    Email VARCHAR(100),
+    AccountLimit DECIMAL(10, 2),
+    Balance DECIMAL(10, 2) NOT NULL,
+    CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
+);
+
+
+
+
 
 GO
-
-
 CREATE TRIGGER trg_SetReferenceId
 ON Transactions
 AFTER INSERT
@@ -40,6 +52,8 @@ BEGIN
     INNER JOIN inserted i ON t.TransactionId = i.TransactionId;
 END;
 GO
+
+
 
 INSERT INTO Customers VALUES(100001, 'Customer A'),
                             (100002, 'Customer B'),
@@ -59,8 +73,11 @@ INSERT INTO Transactions (AccountId, TransactionType, Amount)
 VALUES (100005, 'Deposit', 450.25);
 
 
+
 SELECT*FROM Customers;
 SELECT*FROM Transactions;
+
+--Transaction, Customer Inner Join
 SELECT t.transactionId, c.AccountHolder as 'Account Holder',
         t.TransactionType, t.ReferenceId, t.Amount, t.TransactionDate
 FROM Transactions t
