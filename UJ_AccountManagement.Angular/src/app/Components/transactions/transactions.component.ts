@@ -15,7 +15,7 @@ import { ToastService } from '../../Services/toast.service';
 // Register AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-// Define transaction interface
+// transaction interface
 interface IRow {
   transactionId: number;
   accountHolder: string;

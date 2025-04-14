@@ -2,6 +2,7 @@
 using UJ_AccountManagement.Domain.Interfaces;
 using UJ_AccountManagement.Infrastructure.DBContext;
 using UJ_AccountManagement.Infrastructure.Repositories;
+using UJ_AccountManagement.Services;
 
 namespace UJ_AccountManagement
 {
@@ -22,6 +23,9 @@ namespace UJ_AccountManagement
 
             builder.Services.AddScoped<DbConnectionFactory>();
             builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+            builder.Services.AddScoped<IPhoneNumberNormalizer, PhoneNumberNormalizer>();
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",

@@ -14,6 +14,10 @@ import { ActionButtonsComponent } from './Components/action-buttons/action-butto
 import { AddTransactionsComponent } from './Components/add-transactions/add-transactions.component';
 import { DeleteTransactionComponent } from './Components/delete-transaction/delete-transaction.component';
 import { AlertNotificationComponent } from './Components/notifications/alert-notification/alert-notification.component';
+import { FilterComponent } from './Components/Accounts/filter/filter.component';
+import { NewAccountComponent } from './Components/Accounts/new-account/new-account.component';
+import { AccountsTableComponent } from './Components/Accounts/accounts-table/accounts-table.component';
+import { AccountsMainComponent } from './Components/Accounts/accounts-main/accounts-main.component';
 
 
 
@@ -25,7 +29,11 @@ import { AlertNotificationComponent } from './Components/notifications/alert-not
     ActionButtonsComponent,
     AddTransactionsComponent,
     DeleteTransactionComponent,
-    AlertNotificationComponent
+    AlertNotificationComponent,
+    FilterComponent,
+    NewAccountComponent,
+    AccountsTableComponent,
+    AccountsMainComponent
   ],
   imports: [
     BrowserModule,

@@ -8,16 +8,17 @@ using UJ_AccountManagement.Domain.Entities;
 
 namespace UJ_AccountManagement.Domain.Interfaces
 {
-    public interface IAccount
+    public interface IAccountRepository
     {
-        Task<Account> CreateAccount(Account account);
-        Task<bool> UpdateAccount(Account account);
-        Task<bool> DeleteAccountAsync(int accountId);
+        Task CreateAccount(Account account);
+        Task UpdateAccount(Account account);
+        Task DeleteAccount(int accountId);
 
 
         //GET Methods
         Task<Account> GetAccountById(int accountId);
         Task<List<Account>> GetAllAccounts();
-        Task<List<Account>> FilterAccounts(AccountFilter filter);
+        Task<List<Account>> FilterAccounts(string? accountHolder, string? email, string? phone,
+            decimal? minBalance, decimal? maxBalance, DateTime? createdFrom, DateTime? createdTo);
     }
 }

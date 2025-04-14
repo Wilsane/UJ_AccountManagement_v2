@@ -11,6 +11,7 @@ namespace UJ_AccountManagement.Domain.DTOs
         public string? Keyword { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
+        public string? RegionCode { get; set; } = "ZA";
         public string? Phone { get; set; }
         public decimal? MinBalance { get; set; }
         public decimal? MaxBalance { get; set; }
